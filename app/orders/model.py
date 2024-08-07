@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, Date, Time
 from app.db.base_model import Base
 
 
-class Order(Base):
+class Orders(Base):
     __tablename__ = 'orders'
 
     id = Column(Integer, primary_key=True, index=True)
