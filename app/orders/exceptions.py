@@ -33,3 +33,13 @@ class TimeIntervalOrderHTTPException(OrderHTTTPException):
     detail = f"Прогулки могут быть запланированы только с {START_WALK_TIME} до {END_WALK_TIME}"
 
 
+class BusyWalkingTimeHTTPException(OrderHTTTPException):
+    status_code = 400
+
+    def __init__(self, available_times: list = None):
+        detail = (
+            f"Данное время недоступно для прогулки. Доступное время на этот день: {available_times}"
+        )
+        super().__init__()
+        self.status_code = self.status_code
+        self.detail = detail
