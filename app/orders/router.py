@@ -1,5 +1,6 @@
 from datetime import date, time
 from fastapi import APIRouter, Response, status, Depends, Query
+from fastapi_cache.decorator import cache
 
 from app.dao.exception import DaoMethodException
 from app.orders.dao import OrdersDAO
@@ -17,6 +18,7 @@ router = APIRouter(
 
 
 @router.get("")
+@cache(expire=45)  # 45 секунд
 async def get_orders(walk_date: date) -> list[SOrderRead]:
     try:
         returning_value = await OrdersDAO.get_all(walk_date=walk_date)
