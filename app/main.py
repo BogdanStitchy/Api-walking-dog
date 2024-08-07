@@ -5,6 +5,7 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from sqladmin import Admin
 from redis import asyncio as aioredis
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.admin_panel.views import OrderAdmin
 from app.db.base_model import engine
@@ -37,6 +38,12 @@ async def startup():
     redis = await aioredis.from_url(f"redis://{HOST_REDIS}", encoding="utf8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="cache")
 
+
+instrumentator = Instrumentator(
+    should_group_status_codes=False,  # не группировать статусы ответа
+    excluded_handlers=[".*admin.*", "/metrics"],  # игнорируемые эндпоинты
+)
+instrumentator.instrument(app).expose(app)  # Prometheus
 
 admin = Admin(app, engine)
 admin.add_view(OrderAdmin)
