@@ -1,7 +1,10 @@
 from time import time
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from sqladmin import Admin
 
+from app.admin_panel.views import OrderAdmin
+from app.db.base_model import engine
 from app.logger import logger
 from app.orders.router import router
 
@@ -23,6 +26,9 @@ app.add_middleware(
     allow_headers=["Content_Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin",
                    "Authorization"],
 )
+
+admin = Admin(app, engine)
+admin.add_view(OrderAdmin)
 
 
 @app.middleware("http")
