@@ -3,6 +3,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.dao.exception import DaoMethodException
 from app.db.base_model import async_session_maker
+from app.logger import logger
 
 
 class BaseDAO:
@@ -25,6 +26,7 @@ class BaseDAO:
                 "model": cls.model,
                 "model_id": model_id
             }
+            logger.error(msg, extra=extra, exc_info=True)
             raise DaoMethodException(error)
 
     @classmethod
@@ -44,6 +46,7 @@ class BaseDAO:
                 "model": cls.model,
                 "filter_by": filter_by
             }
+            logger.error(msg, extra=extra, exc_info=True)
             raise DaoMethodException(error)
 
     @classmethod
@@ -64,6 +67,7 @@ class BaseDAO:
                 "model": cls.model,
                 "filter_by": filter_by
             }
+            logger.error(msg, extra=extra, exc_info=True)
             raise DaoMethodException(error)
 
     @classmethod
@@ -83,6 +87,7 @@ class BaseDAO:
                 "model": cls.model,
                 "data": data
             }
+            logger.error(msg, extra=extra, exc_info=True)
             raise DaoMethodException(error)
 
     @classmethod
@@ -103,4 +108,5 @@ class BaseDAO:
                 "model": cls.model,
                 "filter_by": filter_by
             }
+            logger.error(msg, extra=extra, exc_info=True)
             raise DaoMethodException(error)
