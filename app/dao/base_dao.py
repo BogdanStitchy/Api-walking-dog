@@ -1,6 +1,7 @@
 from sqlalchemy import delete, insert, select
 from sqlalchemy.exc import SQLAlchemyError
 
+from app.dao.exception import DaoMethodException
 from app.db.base_model import async_session_maker
 
 
@@ -24,7 +25,7 @@ class BaseDAO:
                 "model": cls.model,
                 "model_id": model_id
             }
-            return {"error": error.__str__()}
+            raise DaoMethodException(error)
 
     @classmethod
     async def find_one_or_none(cls, **filter_by):
@@ -43,7 +44,7 @@ class BaseDAO:
                 "model": cls.model,
                 "filter_by": filter_by
             }
-            return {"error": error.__str__()}
+            raise DaoMethodException(error)
 
     @classmethod
     async def get_all(cls, **filter_by):
@@ -63,7 +64,7 @@ class BaseDAO:
                 "model": cls.model,
                 "filter_by": filter_by
             }
-            return {"error": error.__str__()}
+            raise DaoMethodException(error)
 
     @classmethod
     async def add(cls, **data):
@@ -82,7 +83,7 @@ class BaseDAO:
                 "model": cls.model,
                 "data": data
             }
-            return {"error": error.__str__()}
+            raise DaoMethodException(error)
 
     @classmethod
     async def delete(cls, **filter_by):
@@ -102,4 +103,4 @@ class BaseDAO:
                 "model": cls.model,
                 "filter_by": filter_by
             }
-            return {"error": error.__str__()}
+            raise DaoMethodException(error)
