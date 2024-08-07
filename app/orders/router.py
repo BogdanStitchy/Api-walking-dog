@@ -3,6 +3,7 @@ from fastapi import APIRouter, Response, status, HTTPException, Depends, Query
 
 from app.orders.dao import OrdersDAO
 from app.orders.utils import validate_walk_time
+from app.orders.schemas import SOrderRead
 
 router = APIRouter(
     prefix="/orders",
@@ -11,7 +12,7 @@ router = APIRouter(
 
 
 @router.get("")
-async def get_bookings(walk_date: date):
+async def get_bookings(walk_date: date) -> list[SOrderRead]:
     returning_value = await OrdersDAO.get_all(walk_date=walk_date)
 
     return returning_value
