@@ -1,6 +1,8 @@
-from fastapi import FastAPI
+from time import time
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.logger import logger
 from app.orders.router import router
 
 app = FastAPI()
@@ -21,3 +23,16 @@ app.add_middleware(
     allow_headers=["Content_Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin",
                    "Authorization"],
 )
+
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    # замер времени обработки каждого запроса
+    start_time = time()
+    response = await call_next(request)
+    process_time = time() - start_time
+    response.headers["X-Process-Time"] = str(process_time)
+    logger.info("Request execution time", extra={
+        "process_time": round(process_time, 4)
+    })
+    return response
