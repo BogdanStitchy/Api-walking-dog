@@ -12,14 +12,14 @@ router = APIRouter(
 
 
 @router.get("")
-async def get_bookings(walk_date: date) -> list[SOrderRead]:
+async def get_orders(walk_date: date) -> list[SOrderRead]:
     returning_value = await OrdersDAO.get_all(walk_date=walk_date)
 
     return returning_value
 
 
 @router.post("/add_order")
-async def add_bookings(
+async def add_order(
         apartment_number: str = Query(..., description="Номер квартиры"),
         pet_name: str = Query(..., description="Имя питомца"),
         pet_breed: str = Query(..., description="Порода питомца"),
@@ -29,17 +29,17 @@ async def add_bookings(
                                 ),
         walk_time: time = Depends(validate_walk_time)
 ):
-    existing_orders_for_selected_date = await OrdersDAO.get_all(walk_time=walk_time)
+    existing_orders_for_selected_date = await OrdersDAO.get_all(walk_date=walk_date)
     if len(existing_orders_for_selected_date) < 2:
         await OrdersDAO.add(apartment_number=apartment_number,
                             pet_name=pet_name,
                             pet_breed=pet_breed,
                             walk_date=walk_date,
                             walk_time=walk_time)
-    return {"message": "Order added successfully"}
+    return Response(status_code=status.HTTP_201_CREATED)
 
 
 @router.delete("/{order_id}")
-async def delete_booking(order_id: int):
+async def delete_order(order_id: int) -> Response:
     await OrdersDAO.delete(id=order_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
