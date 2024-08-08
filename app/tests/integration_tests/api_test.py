@@ -8,10 +8,10 @@ from app.orders.dao import OrdersDAO
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("expected_status_code, apartment_number, pet_name, pet_breed, walk_date, walk_time",
-                         [(status.HTTP_201_CREATED, "101", "Рекс", "Лабрадор", date(2024, 8, 11), time(10, 0)),
-                          (status.HTTP_201_CREATED, "202", "Бобик", "Пудель", date(2024, 8, 11), time(10, 0)),
+                         [(status.HTTP_201_CREATED, 101, "Рекс", "Лабрадор", date(2024, 8, 11), time(10, 0)),
+                          (status.HTTP_201_CREATED, 202, "Бобик", "Пудель", date(2024, 8, 11), time(10, 0)),
                           # Попытка добавить на уже занятое время
-                          (status.HTTP_409_CONFLICT, None, "Рекс", "Лабрадор", date(2024, 8, 11), time(10, 0)),
+                          (status.HTTP_409_CONFLICT, 123, "Рекс", "Лабрадор", date(2024, 8, 11), time(10, 0)),
                           # Попытка добавить на 10:45 минут (ошибка валидации)
                           (status.HTTP_400_BAD_REQUEST, None, "Рекс", "Лабрадор", date(2024, 8, 11),
                            time(10, 45)),
@@ -41,7 +41,7 @@ async def test_endpoint_add_order(async_client, expected_status_code, apartment_
 async def test_endpoint_get_orders(async_client, clear_db_table_order, start_redis_for_method_with_cache):
     count_addition = 2
     apartment_number, pet_name, pet_breed, walk_date, walk_time = (
-        "101", "Рекс", "Лабрадор", date(2024, 8, 11), time(10, 0))
+        101, "Рекс", "Лабрадор", date(2024, 8, 11), time(10, 0))
     for i in range(count_addition):
         await OrdersDAO.add(apartment_number=apartment_number,
                             pet_name=pet_name,
@@ -55,7 +55,7 @@ async def test_endpoint_get_orders(async_client, clear_db_table_order, start_red
 @pytest.mark.asyncio
 async def test_endpoint_delete_order(async_client, clear_db_table_order, start_redis_for_method_with_cache):
     apartment_number, pet_name, pet_breed, walk_date, walk_time = (
-        "101", "Рекс", "Лабрадор", date(2024, 8, 11), time(10, 0))
+        101, "Рекс", "Лабрадор", date(2024, 8, 11), time(10, 0))
     await OrdersDAO.add(apartment_number=apartment_number,
                         pet_name=pet_name,
                         pet_breed=pet_breed,
