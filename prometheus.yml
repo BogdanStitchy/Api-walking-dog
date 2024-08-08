@@ -12,9 +12,9 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'booking'
+  - job_name: 'api_walking_dog'
   
     scrape_interval: 5s
 
     static_configs:
-      - targets: ['booking:8000']
+      - targets: ['api_walking_dog:8000']
