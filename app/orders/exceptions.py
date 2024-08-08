@@ -34,7 +34,7 @@ class TimeIntervalOrderHTTPException(OrderHTTTPException):
 
 
 class BusyWalkingTimeHTTPException(OrderHTTTPException):
-    status_code = 400
+    status_code = 409
 
     def __init__(self, available_times: list = None):
         detail = (
