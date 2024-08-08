@@ -29,7 +29,7 @@ async def get_orders(walk_date: date) -> list[SOrderRead]:
 
 @router.post("/add_order")
 async def add_order(
-        apartment_number: str = Query(..., description="Номер квартиры"),
+        apartment_number: int = Query(..., description="Номер квартиры"),
         pet_name: str = Query(..., description="Имя питомца"),
         pet_breed: str = Query(..., description="Порода питомца"),
         walk_date: date = Query(...,

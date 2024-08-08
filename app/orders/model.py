@@ -7,7 +7,7 @@ class Orders(Base):
     __tablename__ = 'orders'
 
     id = Column(Integer, primary_key=True, index=True)
-    apartment_number = Column(String, nullable=False)
+    apartment_number = Column(Integer, nullable=False)
     pet_name = Column(String, nullable=False)
     pet_breed = Column(String, nullable=False)
     walk_date = Column(Date, index=True, nullable=False)
